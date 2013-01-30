@@ -246,7 +246,7 @@ int main( int ac, char** av )
         else if( to == "json" ) { output = &traits< json >::output; }
         else if( to == "xml" ) { output = &traits< xml >::output; }
         else if( to == "path-value" ) { output = &traits< path_value >::output; }
-        else if( to == "name-value" ) { output = &traits< path_value >::output; }
+        else if( to == "name-value" ) { output = &traits< name_value >::output; }
         if( linewise )
         {
             comma::signal_flag is_shutdown;
