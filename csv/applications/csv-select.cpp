@@ -36,7 +36,7 @@
 #include <vector>
 #include <boost/lexical_cast.hpp>
 #include <boost/optional.hpp>
-#include <boost/regex.hpp>
+#include <regex>
 #include <boost/scoped_ptr.hpp>
 #include "../../application/command_line_options.h"
 #include "../../application/contact_info.h"
@@ -96,8 +96,8 @@ void usage()
     exit( 1 );
 }
 
-bool matches( const std::string& value, const boost::regex& r ) { return boost::regex_match( value, r ); }
-template < typename T > bool matches( const T& value, const boost::regex& r ) { COMMA_THROW( comma::exception, "regex implemented only for strings" ); }
+bool matches( const std::string& value, const std::regex& r ) { return std::regex_match( value, r ); }
+template < typename T > bool matches( const T& value, const std::regex& r ) { COMMA_THROW( comma::exception, "regex implemented only for strings" ); }
 
 template < typename T > static boost::optional< T > get_optional_( const comma::command_line_options& options, const std::string& what ) { return options.optional< T >( what ); }
 template <> boost::optional< boost::posix_time::ptime > get_optional_< boost::posix_time::ptime >( const comma::command_line_options& options, const std::string& what )
@@ -116,7 +116,7 @@ struct constraints
     boost::optional< T > greater;
     boost::optional< T > from;
     boost::optional< T > to;
-    boost::optional< boost::regex > regex;
+    boost::optional< std::regex > regex;
     bool sorted;
 
     bool empty() const { return !equals && !not_equal && !less && !greater && !from && !to && !regex && !sorted; }
@@ -132,7 +132,7 @@ struct constraints
         less = get_optional_< T >( options, "--less" );
         greater = get_optional_< T >( options, "--greater" );
         const boost::optional< std::string >& s = get_optional_< std::string >( options, "--regex" );
-        if( s ) { regex = boost::regex( *s ); }
+        if( s ) { regex = std::regex( *s ); }
         sorted = options.exists( "--sorted,--input-sorted" );
     }
 
@@ -149,7 +149,7 @@ struct constraints
         if( m.exists( "to" ) ) { to = m.value< T >( "to" ); }
         if( m.exists( "less-or-equal" ) ) { to = m.value< T >( "less-or-equal" ); }
         if( m.exists( "le" ) ) { to = m.value< T >( "le" ); }
-        if( m.exists( "regex" ) ) { regex = boost::regex( m.value< std::string >( "regex" ) ); }
+        if( m.exists( "regex" ) ) { regex = std::regex( m.value< std::string >( "regex" ) ); }
         sorted = m.exists( "sorted" );
     }
 

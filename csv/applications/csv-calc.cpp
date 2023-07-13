@@ -37,7 +37,7 @@
 #endif
 
 #include <iostream>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/optional.hpp>
 #include <boost/ptr_container/ptr_vector.hpp>
@@ -261,15 +261,15 @@ class Values
                 block_element_ = input_format_.offset( *block_index_ );
                 switch( block_element_.type )
                 {
-                    case comma::csv::format::char_t: block_from_bin_ = boost::bind( &Values::from_bin_< char >, _1 ); break;
-                    case comma::csv::format::int8: block_from_bin_ = boost::bind( &Values::from_bin_< char >, _1 ); break;
-                    case comma::csv::format::uint8: block_from_bin_ = boost::bind( &Values::from_bin_< unsigned char >, _1 ); break;
-                    case comma::csv::format::int16: block_from_bin_ = boost::bind( &Values::from_bin_< comma::int16 >, _1 ); break;
-                    case comma::csv::format::uint16: block_from_bin_ = boost::bind( &Values::from_bin_< comma::uint16 >, _1 ); break;
-                    case comma::csv::format::int32: block_from_bin_ = boost::bind( &Values::from_bin_< comma::int32 >, _1 ); break;
-                    case comma::csv::format::uint32: block_from_bin_ = boost::bind( &Values::from_bin_< comma::uint32 >, _1 ); break;
-                    case comma::csv::format::int64: block_from_bin_ = boost::bind( &Values::from_bin_< comma::int64 >, _1 ); break;
-                    case comma::csv::format::uint64: block_from_bin_ = boost::bind( &Values::from_bin_< comma::uint64 >, _1 ); break;
+                    case comma::csv::format::char_t: block_from_bin_ = boost::bind( &Values::from_bin_< char >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::int8: block_from_bin_ = boost::bind( &Values::from_bin_< char >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::uint8: block_from_bin_ = boost::bind( &Values::from_bin_< unsigned char >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::int16: block_from_bin_ = boost::bind( &Values::from_bin_< comma::int16 >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::uint16: block_from_bin_ = boost::bind( &Values::from_bin_< comma::uint16 >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::int32: block_from_bin_ = boost::bind( &Values::from_bin_< comma::int32 >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::uint32: block_from_bin_ = boost::bind( &Values::from_bin_< comma::uint32 >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::int64: block_from_bin_ = boost::bind( &Values::from_bin_< comma::int64 >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::uint64: block_from_bin_ = boost::bind( &Values::from_bin_< comma::uint64 >, boost::placeholders::_1 ); break;
                     default: COMMA_THROW( comma::exception, "expected integer for block id, got format " << input_format_.string() );
                 }
             }
@@ -278,15 +278,15 @@ class Values
                 id_element_ = input_format_.offset( *id_index_ );
                 switch( id_element_.type )
                 {
-                    case comma::csv::format::char_t: id_from_bin_ = boost::bind( &Values::from_bin_< char >, _1 ); break;
-                    case comma::csv::format::int8: id_from_bin_ = boost::bind( &Values::from_bin_< char >, _1 ); break;
-                    case comma::csv::format::uint8: id_from_bin_ = boost::bind( &Values::from_bin_< unsigned char >, _1 ); break;
-                    case comma::csv::format::int16: id_from_bin_ = boost::bind( &Values::from_bin_< comma::int16 >, _1 ); break;
-                    case comma::csv::format::uint16: id_from_bin_ = boost::bind( &Values::from_bin_< comma::uint16 >, _1 ); break;
-                    case comma::csv::format::int32: id_from_bin_ = boost::bind( &Values::from_bin_< comma::int32 >, _1 ); break;
-                    case comma::csv::format::uint32: id_from_bin_ = boost::bind( &Values::from_bin_< comma::uint32 >, _1 ); break;
-                    case comma::csv::format::int64: id_from_bin_ = boost::bind( &Values::from_bin_< comma::int64 >, _1 ); break;
-                    case comma::csv::format::uint64: id_from_bin_ = boost::bind( &Values::from_bin_< comma::uint64 >, _1 ); break;
+                    case comma::csv::format::char_t: id_from_bin_ = boost::bind( &Values::from_bin_< char >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::int8: id_from_bin_ = boost::bind( &Values::from_bin_< char >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::uint8: id_from_bin_ = boost::bind( &Values::from_bin_< unsigned char >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::int16: id_from_bin_ = boost::bind( &Values::from_bin_< comma::int16 >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::uint16: id_from_bin_ = boost::bind( &Values::from_bin_< comma::uint16 >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::int32: id_from_bin_ = boost::bind( &Values::from_bin_< comma::int32 >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::uint32: id_from_bin_ = boost::bind( &Values::from_bin_< comma::uint32 >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::int64: id_from_bin_ = boost::bind( &Values::from_bin_< comma::int64 >, boost::placeholders::_1 ); break;
+                    case comma::csv::format::uint64: id_from_bin_ = boost::bind( &Values::from_bin_< comma::uint64 >, boost::placeholders::_1 ); break;
                     default: COMMA_THROW( comma::exception, "expected integer for block id, got format " << input_format_.string() );
                 }
             }

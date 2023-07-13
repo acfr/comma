@@ -33,7 +33,7 @@
 
 #include <iostream>
 #include <boost/array.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/unordered/unordered_map.hpp>
 
 #include <boost/units/systems/si.hpp>
@@ -340,14 +340,14 @@ namespace units {
             map[metres][feet] = cast< length_t, imperial_us_length_t >;
             map[metres][nautical_miles] = cast< length_t, nautical_mile_t >;
             map[metres][statute_miles] = cast< length_t, statute_mile_t >;
-            map[hours][minutes] = boost::bind( &scale, _1, 60.0 );
-            map[hours][seconds] = boost::bind( &scale, _1, 3600.0 );
-            map[minutes][seconds] = boost::bind( &scale, _1, 60.0 );
-            map[minutes][hours] = boost::bind( &scale, _1, 1.0 / 60.0 );
-            map[seconds][hours] = boost::bind( &scale, _1, 1.0 / 3600.0 );
-            map[seconds][minutes] = boost::bind( &scale, _1, 1.0 / 60.0 );
-            map[percent][fraction] = boost::bind( &scale, _1, 0.01 );
-            map[fraction][percent] = boost::bind( &scale, _1, 100.0 );
+            map[hours][minutes] = boost::bind( &scale, boost::placeholders::_1, 60.0 );
+            map[hours][seconds] = boost::bind( &scale, boost::placeholders::_1, 3600.0 );
+            map[minutes][seconds] = boost::bind( &scale, boost::placeholders::_1, 60.0 );
+            map[minutes][hours] = boost::bind( &scale, boost::placeholders::_1, 1.0 / 60.0 );
+            map[seconds][hours] = boost::bind( &scale, boost::placeholders::_1, 1.0 / 3600.0 );
+            map[seconds][minutes] = boost::bind( &scale, boost::placeholders::_1, 1.0 / 60.0 );
+            map[percent][fraction] = boost::bind( &scale, boost::placeholders::_1, 0.01 );
+            map[fraction][percent] = boost::bind( &scale, boost::placeholders::_1, 100.0 );
         }
         return map[from][to];
     }

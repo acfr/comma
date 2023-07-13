@@ -31,13 +31,13 @@
 /// @author vsevolod vlaskine
 
 #include <iostream>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/property_tree/info_parser.hpp>
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/xml_parser.hpp>
-#include <boost/regex.hpp>
+#include <regex>
 #include "../../base/exception.h"
 #include "../../application/contact_info.h"
 #include "../../application/command_line_options.h"
@@ -157,7 +157,7 @@ template <> struct traits< path_value > // quick and dirty
 
 static std::vector< std::string > path_strings;
 static std::vector< boost::property_tree::ptree::path_type > paths;
-static std::vector< boost::optional< boost::regex > > path_regex;
+static std::vector< boost::optional< std::regex > > path_regex;
 static void ( * input )( std::istream& is, boost::property_tree::ptree& ptree );
 static void ( * output )( std::ostream& is, const boost::property_tree::ptree& ptree, const std::string& );
 
@@ -188,7 +188,7 @@ static void traverse_( std::ostream& os, const boost::property_tree::ptree& ptre
     const std::string& s = path.to_string( '/' ); // quick and dirty
     for( std::size_t i = 0; i < paths.size(); ++i ) // todo: quick and dirty: can prune much earlier, i guess...
     {
-        if( path_regex[i] ) { if( !boost::regex_match( s, *path_regex[i] ) ) { continue; } }
+        if( path_regex[i] ) { if( !std::regex_match( s, *path_regex[i] ) ) { continue; } }
         else if( s != path_strings[i] ) { continue; }
         boost::optional< const boost::property_tree::ptree& > child = ptree.get_child_optional( path.to_string( '.' ) ); // quick and dirty, watch performance
         if( !child ) { continue; }
@@ -245,7 +245,7 @@ int main( int ac, char** av )
         {
             if ( is_regex_(path_strings[i]) )
             {
-                path_regex[i] = boost::regex( path_strings[i], boost::regex::extended );
+                path_regex[i] = std::regex( path_strings[i], std::regex::extended );
                 has_regex = true;
             }
             else
@@ -332,8 +332,8 @@ int main( int ac, char** av )
     }
     catch( boost::property_tree::ptree_error& ex )
     {
-        boost::regex e( "<unspecified file>" );
-        std::cerr << "name-value-convert: parsing error: " << boost::regex_replace( std::string( ex.what() ), e, "line" ) << std::endl;
+        std::regex e( "<unspecified file>" );
+        std::cerr << "name-value-convert: parsing error: " << std::regex_replace( std::string( ex.what() ), e, "line" ) << std::endl;
     }
     catch( std::exception& ex )
     {

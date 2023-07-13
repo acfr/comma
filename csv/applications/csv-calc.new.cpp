@@ -36,7 +36,7 @@
 #include <string>
 #include <vector>
 #include <boost/array.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/function.hpp>
 #include "../../application/command_line_options.h"
 #include "../../application/contact_info.h"
@@ -360,7 +360,7 @@ template <> struct bound_result_traits< boost::posix_time::ptime >
 //             {
 //                 get_< R >( *result_ ).push_back( R() );
 //                 bound_functors< T > b( boost::bind( f.reset, boost::ref( get_< R >( *result_ ).back() ) )
-//                                      , boost::bind( f.update, boost::ref( get_< R >( *result_ ).back(), _1 ) )
+//                                      , boost::bind( f.update, boost::ref( get_< R >( *result_ ).back(), boost::placeholders::_1 ) )
 //                                      , boost::bind( f.finalize, boost::ref( get_< R >( *result_ ).back() ) ) );
 //                 get_< T >().push_back( b );
 //             }
@@ -385,7 +385,7 @@ template <> struct bound_result_traits< boost::posix_time::ptime >
 //     typedef T type;
 //     typedef T result_type;
 //     static void apply( result_type& lhs, const T& rhs ) { if( rhs < lhs ) { lhs = rhs; } }
-//     static operation::options< result_type, T > options() { return operation::options< result_type, T >( boost::bind( &min::apply, _1, _2 ), std::numeric_limits< T >::max() ); }
+//     static operation::options< result_type, T > options() { return operation::options< result_type, T >( boost::bind( &min::apply, boost::placeholders::_1, _2 ), std::numeric_limits< T >::max() ); }
 // };
 // 
 // template <> struct min< std::string >
@@ -393,7 +393,7 @@ template <> struct bound_result_traits< boost::posix_time::ptime >
 //     typedef std::string type;
 //     typedef std::string result_type;
 //     static void apply( result_type&, const std::string& ) {}
-//     static operation::options< result_type, T > options() { return operation::options< result_type, T >( boost::bind( &min::apply, _1, _2 ) ); }
+//     static operation::options< result_type, T > options() { return operation::options< result_type, T >( boost::bind( &min::apply, boost::placeholders::_1, _2 ) ); }
 // };
 // 
 // template <> struct min< boost::posix_time::ptime >
@@ -401,7 +401,7 @@ template <> struct bound_result_traits< boost::posix_time::ptime >
 //     typedef boost::posix_time::ptime type;
 //     typedef boost::posix_time::ptime result_type;
 //     static void apply( boost::posix_time::ptime& lhs, const boost::posix_time::ptime& rhs ) { if( lhs.is_not_a_date_time() || rhs < lhs ) { lhs = rhs; } }
-//     static operation::options< result_type, boost::posix_time::ptime > options() { return operation::options< result_type, boost::posix_time::ptime >( boost::bind( &min::apply, _1, _2 ) ); }
+//     static operation::options< result_type, boost::posix_time::ptime > options() { return operation::options< result_type, boost::posix_time::ptime >( boost::bind( &min::apply, boost::placeholders::_1, _2 ) ); }
 // };
 // 
 // template < typename T > struct max
@@ -409,7 +409,7 @@ template <> struct bound_result_traits< boost::posix_time::ptime >
 //     typedef T type;
 //     typedef T result_type;
 //     static void apply( result_type& lhs, const T& rhs ) { if( lhs < rhs ) { lhs = rhs; } }
-//     static operation::options< result_type, T > options() { return operation::options< result_type, T >( boost::bind( &max::apply, _1, _2 ), std::numeric_limits< T >::min() ); }
+//     static operation::options< result_type, T > options() { return operation::options< result_type, T >( boost::bind( &max::apply, boost::placeholders::_1, _2 ), std::numeric_limits< T >::min() ); }
 // };
 // 
 // template <> struct max< std::string >
@@ -417,7 +417,7 @@ template <> struct bound_result_traits< boost::posix_time::ptime >
 //     typedef std::string type;
 //     typedef std::string result_type;
 //     static void apply( result_type& lhs, const std::string& rhs ) { if( lhs < rhs ) { lhs = rhs; } }
-//     static operation::options< result_type, T > options() { return operation::options< result_type, T >( boost::bind( &max::apply, _1, _2 ) ); }
+//     static operation::options< result_type, T > options() { return operation::options< result_type, T >( boost::bind( &max::apply, boost::placeholders::_1, _2 ) ); }
 // };
 // 
 // template <> struct min< boost::posix_time::ptime >
@@ -425,7 +425,7 @@ template <> struct bound_result_traits< boost::posix_time::ptime >
 //     typedef boost::posix_time::ptime type;
 //     typedef boost::posix_time::ptime result_type;
 //     static void apply( boost::posix_time::ptime& lhs, const boost::posix_time::ptime& rhs ) { if( lhs.is_not_a_date_time() || rhs < lhs ) { lhs = rhs; } }
-//     static operation::options< result_type, boost::posix_time::ptime > options() { return operation::options< result_type, boost::posix_time::ptime >( boost::bind( &max::apply, _1, _2 ) ); }
+//     static operation::options< result_type, boost::posix_time::ptime > options() { return operation::options< result_type, boost::posix_time::ptime >( boost::bind( &max::apply, boost::placeholders::_1, _2 ) ); }
 // };
 // 
 // template < typename T > struct size
@@ -433,7 +433,7 @@ template <> struct bound_result_traits< boost::posix_time::ptime >
 //     typedef T type;
 //     typedef double result_type;
 //     static void apply( result_type& lhs, const T& rhs ) { ++rhs; }
-//     static operation::options< result_type, T > options() { return operation::options< result_type, T >( boost::bind( &size::apply, _1, _2 ), 0 ); }
+//     static operation::options< result_type, T > options() { return operation::options< result_type, T >( boost::bind( &size::apply, boost::placeholders::_1, _2 ), 0 ); }
 // };
 // 
 // template < typename T > struct sum
@@ -441,7 +441,7 @@ template <> struct bound_result_traits< boost::posix_time::ptime >
 //     typedef T type;
 //     typedef T result_type;
 //     static void apply( result_type& lhs, const T& rhs ) { lhs += rhs; }
-//     static operation::options< result_type, T > options() { return operation::options< result_type, T >( boost::bind( &sum::apply, _1, _2 ), 0 ); }
+//     static operation::options< result_type, T > options() { return operation::options< result_type, T >( boost::bind( &sum::apply, boost::placeholders::_1, _2 ), 0 ); }
 // };
 // 
 // template <> struct sum< std::string >
@@ -449,7 +449,7 @@ template <> struct bound_result_traits< boost::posix_time::ptime >
 //     typedef std::string type;
 //     typedef std::string result_type;
 //     static void apply( result_type&, const std::string& ) {}
-//     static operation::options< result_type, T > options() { return operation::options< result_type, T >( boost::bind( &sum::apply, _1, _2 ) ); }
+//     static operation::options< result_type, T > options() { return operation::options< result_type, T >( boost::bind( &sum::apply, boost::placeholders::_1, _2 ) ); }
 // };
 // 
 // template <> struct sum< boost::posix_time::ptime >
@@ -457,7 +457,7 @@ template <> struct bound_result_traits< boost::posix_time::ptime >
 //     typedef boost::posix_time::ptime type;
 //     typedef boost::posix_time::ptime result_type;
 //     static void apply( boost::posix_time::ptime&, const boost::posix_time::ptime& ) {}
-//     static operation::options< result_type, boost::posix_time::ptime > options() { return operation::options< result_type, boost::posix_time::ptime >( boost::bind( &sum::apply, _1, _2 ) ); }
+//     static operation::options< result_type, boost::posix_time::ptime > options() { return operation::options< result_type, boost::posix_time::ptime >( boost::bind( &sum::apply, boost::placeholders::_1, _2 ) ); }
 // };
 // 
 // } // namespace operations {

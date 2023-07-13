@@ -35,10 +35,10 @@
 #include "../base/exception.h"
 #include <sstream>
 #include <set>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/config/warning_disable.hpp>
 #include <boost/optional.hpp>
-#include <boost/regex.hpp>
+#include <regex>
 #include <boost/spirit/include/qi.hpp>
 #include <boost/unordered_set.hpp>
 
@@ -67,9 +67,9 @@ command_line_options::command_line_options( const std::vector< std::string >& ar
 
 std::string command_line_options::escaped( const std::string& s ) // quick and dirty
 {
-    static const boost::regex r( "\\\"" );
-    //return s.find_first_of( "; \t\n&<>|$#*?()[]{}\'\"" ) == std::string::npos ? s : boost::regex_replace( s, r, "\\\\\"" );
-    return boost::regex_replace( s, r, "\\\\\"" );
+    static const std::regex r( "\\\"" );
+    //return s.find_first_of( "; \t\n&<>|$#*?()[]{}\'\"" ) == std::string::npos ? s : std::regex_replace( s, r, "\\\\\"" );
+    return std::regex_replace( s, r, "\\\\\"" );
 }
 
 std::string command_line_options::string() const
@@ -106,14 +106,14 @@ std::vector< std::string > command_line_options::unnamed( const std::string& val
     for( unsigned int i = 1; i < argv_.size(); ++i )
     {
         bool is_valueless = false;
-        for( unsigned int k = 0; !is_valueless && k < valueless.size(); ++k ) { is_valueless = boost::regex_match( argv_[i], boost::regex( valueless[k] ) ); }
+        for( unsigned int k = 0; !is_valueless && k < valueless.size(); ++k ) { is_valueless = std::regex_match( argv_[i], std::regex( valueless[k] ) ); }
         if( is_valueless ) { continue; }
         bool is_valued = false;
         bool has_equal_sign = false;
         for( unsigned int j = 0; !is_valued && j < valued.size(); ++j )
         {
-            has_equal_sign = boost::regex_match( argv_[i], boost::regex( valued[j] + "=.*" ) );
-            is_valued = boost::regex_match( argv_[i], boost::regex( valued[j] ) ) || has_equal_sign;
+            has_equal_sign = std::regex_match( argv_[i], std::regex( valued[j] + "=.*" ) );
+            is_valued = std::regex_match( argv_[i], std::regex( valued[j] ) ) || has_equal_sign;
         }
         if( is_valued ) { if( !has_equal_sign ) { ++i; } continue; }
         w.push_back( argv_[i] );
@@ -226,12 +226,12 @@ namespace impl {
         description_t d;
         bool r = boost::spirit::qi::phrase_parse( s.begin()
                                                 , s.end()
-                                                ,      name[ boost::bind( push_back_, boost::ref( d.names ), _1 ) ]
-                                                    >> *( ',' >> name[ boost::bind( push_back_, boost::ref( d.names ), _1 ) ] )
-                                                    >> -( '=' >> ( value[ boost::bind( got_value, boost::ref( d ), _1 ) ]
-                                                                | optional_value[ boost::bind( got_optional_value, boost::ref( d ), _1 ) ] ) )
-                                                    >> -( ';' >> default_value[ boost::bind( got_default_value, boost::ref( d ), _1 ) ] )
-                                                    >> -( ';' >> *( ascii::space ) >> help[ boost::bind( set_, boost::ref( d.help ), _1 ) ] )
+                                                ,      name[ boost::bind( push_back_, boost::ref( d.names ), boost::placeholders::_1 ) ]
+                                                    >> *( ',' >> name[ boost::bind( push_back_, boost::ref( d.names ), boost::placeholders::_1 ) ] )
+                                                    >> -( '=' >> ( value[ boost::bind( got_value, boost::ref( d ), boost::placeholders::_1 ) ]
+                                                                | optional_value[ boost::bind( got_optional_value, boost::ref( d ), boost::placeholders::_1 ) ] ) )
+                                                    >> -( ';' >> default_value[ boost::bind( got_default_value, boost::ref( d ), boost::placeholders::_1 ) ] )
+                                                    >> -( ';' >> *( ascii::space ) >> help[ boost::bind( set_, boost::ref( d.help ), boost::placeholders::_1 ) ] )
                                                     >> qi::eoi
                                                 , ascii::space );
         if( !r ) { COMMA_THROW( comma::exception, "invalid option description: \"" << s << "\"" ); }

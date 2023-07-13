@@ -28,7 +28,7 @@
 // IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <gtest/gtest.h>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include "../lazy.h"
 
 namespace comma { namespace sync { namespace test {

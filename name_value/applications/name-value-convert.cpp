@@ -31,13 +31,13 @@
 /// @author vsevolod vlaskine
 
 #include <iostream>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/property_tree/info_parser.hpp>
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/xml_parser.hpp>
-#include <boost/regex.hpp>
+#include <regex>
 #include <boost/version.hpp>
 #include "../../base/exception.h"
 #include "../../application/contact_info.h"
@@ -252,8 +252,8 @@ int main( int ac, char** av )
     }
     catch( boost::property_tree::ptree_error& ex )
     {
-        boost::regex e( "<unspecified file>" );
-        std::cerr << "name-value-convert: parsing error: " << boost::regex_replace( std::string( ex.what() ), e, "line" ) << std::endl;
+        std::regex e( "<unspecified file>" );
+        std::cerr << "name-value-convert: parsing error: " << std::regex_replace( std::string( ex.what() ), e, "line" ) << std::endl;
     }
     catch( std::exception& ex )
     {

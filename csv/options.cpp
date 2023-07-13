@@ -30,7 +30,7 @@
 
 /// @author vsevolod vlaskine
 
-#include <boost/regex.hpp>
+#include <regex>
 #include "../base/exception.h"
 #include "../csv/options.h"
 #include "../string/split.h"
@@ -151,10 +151,10 @@ bool options::has_paths( const std::string& paths ) const
     const std::vector< std::string >& p = split( paths, ',' );
     for( unsigned int i = 0; i < p.size(); ++i )
     {
-        std::string regex_string = "^" + boost::regex_replace( boost::regex_replace( p[i], boost::regex( "\\[" ), "\\\\[" ), boost::regex( "\\]" ), "\\\\]" ) + "(([/\\[])(.*)){0,1}";
-        boost::regex regex( regex_string, boost::regex::extended );
+        std::string regex_string = "^" + std::regex_replace( std::regex_replace( p[i], std::regex( "\\[" ), "\\\\[" ), std::regex( "\\]" ), "\\\\]" ) + "(([/\\[])(.*)){0,1}";
+        std::regex regex( regex_string, std::regex::extended );
         bool found = false;
-        for( unsigned int j = 0; j < v.size() && !found; ++j ) { if( boost::regex_match( v[j], boost::regex( regex_string, boost::regex::extended ) ) ) { found = true; } }
+        for( unsigned int j = 0; j < v.size() && !found; ++j ) { if( std::regex_match( v[j], std::regex( regex_string, std::regex::extended ) ) ) { found = true; } }
         if( !found ) { return false; }
     }
     return true;
@@ -167,9 +167,9 @@ bool options::has_some_of_paths( const std::string& paths ) const
     const std::vector< std::string >& p = split( paths, ',' );
     for( unsigned int i = 0; i < p.size(); ++i )
     {
-        std::string regex_string = "^" + boost::regex_replace( boost::regex_replace( p[i], boost::regex( "\\[" ), "\\\\[" ), boost::regex( "\\]" ), "\\\\]" ) + "(([/\\[])(.*)){0,1}";
-        boost::regex regex( regex_string, boost::regex::extended );
-        for( unsigned int j = 0; j < v.size(); ++j ) { if( boost::regex_match( v[j], regex ) ) { return true; } }
+        std::string regex_string = "^" + std::regex_replace( std::regex_replace( p[i], std::regex( "\\[" ), "\\\\[" ), std::regex( "\\]" ), "\\\\]" ) + "(([/\\[])(.*)){0,1}";
+        std::regex regex( regex_string, std::regex::extended );
+        for( unsigned int j = 0; j < v.size(); ++j ) { if( std::regex_match( v[j], regex ) ) { return true; } }
     }
     return false;
 }
